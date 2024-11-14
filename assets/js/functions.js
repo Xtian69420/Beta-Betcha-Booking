@@ -345,4 +345,146 @@ function RegisterAdmin() {
     }
     
 
-   
+async function loadUnits() {
+    console.log('loading Data');
+    try {
+        const response = await fetch('https://betcha-booking-api-master.onrender.com/units');
+        console.log(response);
+        if (!response.ok) {
+            throw new Error('Failed to fetch admin data');
+        
+        }
+
+        const listUnit = await response.json();
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = '';
+
+        if (listUnit.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="no-data">No admin data available</td></tr>';
+            return;
+        }
+
+        listUnit.forEach(listunits => {
+            const row = document.createElement('tr');
+
+            const unitCell = document.createElement('td');
+            unitCell.textContent = listunits.unitName;
+            row.appendChild(unitCell);
+
+            const locationCell = document.createElement('td');
+            locationCell.textContent = listunits.location;
+            row.appendChild(locationCell);
+
+            const maxCapacity = document.createElement('td');
+            maxCapacity.textContent = listunits.maxPax;
+            row.appendChild(maxCapacity);
+
+            const unitPriceCell = document.createElement('td');
+            unitPriceCell.textContent = listunits.unitPrice;
+            row.appendChild(unitPriceCell);
+            
+            const pricePerPersonCell = document.createElement('td');
+            pricePerPersonCell.textContent = listunits.pricePerPax;
+            row.appendChild(pricePerPersonCell);
+            
+            const availability = listUnit.isAvailable ? "Available" : "Not available";
+            const availabilityCell = document.createElement('td');
+            availabilityCell.textContent = availability;
+            row.appendChild(availabilityCell);
+
+            const editAction = document.createElement('td');
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'Edit';
+            editBtn.classList.add('btn','btn-primary');
+            editBtn.addEventListener('click', function (){
+                retrieveAdminId(admin._id);
+            })
+            editAction.appendChild(editBtn);
+            row.appendChild(editAction);
+        //    editBtn = () => retrieveAdminId(admin._id);
+
+            const removeAction = document.createElement('td');
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Remove'
+            removeBtn.classList.add('btn','btn-primary');
+            removeBtn.setAttribute('data-bs-target', '#modal-admin-remove');
+            removeBtn.setAttribute('data-bs-toggle', 'modal');
+            removeBtn.style.background = 'var(--bs-form-invalid-color)';
+            removeAction.appendChild(removeBtn);
+            row.appendChild(removeAction);
+
+            /*const actionCell = document.createElement('td');
+            const actionBtn = document.createElement('button');
+            actionBtn.textContent = 'Get ID';
+            actionBtn.classList.add('action-btn');
+            actionBtn.onclick = () => retrieveAdminId(admin._id);
+            actionCell.appendChild(actionBtn);
+            row.appendChild(actionCell); */
+
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+function addUnit() {
+    // event.preventDefault();
+ 
+    // document.getElementById('loader').style.display = 'block';
+    // document.getElementById('overlay').style.display = 'block';
+ 
+     const unitName = document.getElementById('input-unit-name').value;
+     const unitLocation = document.getElementById('input-unit-loc').value;
+     const maxPax = document.getElementById('input-max-cap').value;
+     const unitPrice = document.getElementById('input-unit-price').value;
+     const pricePerPax = document.getElementById('input-price-per-person').value;
+     const description = document.getElementById('form-desc').value;
+     const image = document.getElementById('UnitImage').files[0];
+     const inclusion = document.getElementById('form-inclusion').value;
+
+    //var isChecked = document.getElementById('formCheck-1').checked;
+    // const avialabitlity = isChecked ? "TRUE" : "FALSE";
+    // const isAvailable = document.getElementById('input-sign-up-lname').value;
+    
+     const registerUnit = new FormData();
+     registerUnit.append('unitName', unitName);
+     registerUnit.append('location', unitLocation);
+     registerUnit.append('description', description);
+     registerUnit.append('inclusion', inclusion);
+     registerUnit.append('unitPrice', unitPrice);
+     registerUnit.append('maxPax', maxPax);
+     registerUnit.append('pricePerPax', pricePerPax);
+     registerUnit.append('unitImages', image);
+ 
+    /* if (unitName) {
+         registerData.append('middleInitial', middleInitial);
+     }
+ 
+     registerData.append('lastName', lastName);
+ 
+     if (image) {
+         registerData.append('IdImage', image);
+     }
+ 
+     // Debugging the FormData to ensure file is appended
+     for (let [key, value] of registerData.entries()) {
+         console.log(`${key}:`, value);
+     } */
+ 
+     fetch('https://betcha-booking-api-master.onrender.com/addUnit', {
+        
+         method: 'POST',
+         body: registerUnit
+     })
+     .then(response => response.json())
+     .then(data => {
+         alert('Unit Added successful: ' + data.message);
+         window.location.href = 'Admin-UnitsList.html';
+     })
+     .catch(error => {
+         console.error('Error during registration:', error);
+         alert('Failed to register: ' + error.message);
+     })
+ 
+ }

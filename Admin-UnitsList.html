@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
 </head>
 
+<script> 
+    window.onload = function() {
+        loadUnits();
+    }
+</script>
+
 <body id="page-top">
     <div id="wrapper">
         <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
@@ -158,7 +164,7 @@
                                             <th id="UnitActionsTbl">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="table-body">
                                         <tr>
                                             <td id="tbl-unit-name">Unit</td>
                                             <td id="tbl-unit-loc">Location 1</td>
@@ -166,7 +172,7 @@
                                             <td id="tbl-unit-price"></td>
                                             <td id="tbl-unit-price-per-person"></td>
                                             <td id="tbl-unit-availability">Available</td>
-                                            <td><a class="btn btn-primary" role="button" id="btn-unit-edit" style="margin-right: 16px;" data-bs-target="" href="Admin-UnitEdit.html">Edit</a><button class="btn btn-primary" id="btn-unit-remove" type="button" style="background: var(--bs-form-invalid-color);" data-bs-target="#modal-unit-remove" data-bs-toggle="modal">Remove</button></td>
+                                            <td><a class="btn btn-primary" role="button" href="Admin-UnitEdit.html" id="btn-unit-edit" style="margin-right: 16px;" data-bs-target="" href="Admin-UnitEdit.html">Edit</a><button class="btn btn-primary" id="btn-unit-remove" type="button" style="background: var(--bs-form-invalid-color);" data-bs-target="#modal-unit-remove" data-bs-toggle="modal">Remove</button></td>
                                         </tr>
                                         <tr></tr>
                                         <tr></tr>
