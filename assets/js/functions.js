@@ -440,7 +440,7 @@ function addUnit() {
      const unitPrice = document.getElementById('input-unit-price').value;
      const pricePerPax = document.getElementById('input-price-per-person').value;
      const description = document.getElementById('form-desc').value;
-     const image = document.getElementById('UnitImage').files[0];
+     const images = document.getElementById('UnitImage').files;
      const inclusion = document.getElementById('form-inclusion').value;
 
     //var isChecked = document.getElementById('formCheck-1').checked;
@@ -455,7 +455,11 @@ function addUnit() {
      registerUnit.append('unitPrice', unitPrice);
      registerUnit.append('maxPax', maxPax);
      registerUnit.append('pricePerPax', pricePerPax);
-     registerUnit.append('unitImages', image);
+     //registerUnit.append('unitImages', image);
+
+     for (let i = 0; i < images.length; i++) {
+        registerUnit.append('unitImages', images[i]);
+    }
  
     /* if (unitName) {
          registerData.append('middleInitial', middleInitial);
@@ -472,6 +476,7 @@ function addUnit() {
          console.log(`${key}:`, value);
      } */
  
+    
      fetch('https://betcha-booking-api-master.onrender.com/addUnit', {
         
          method: 'POST',
